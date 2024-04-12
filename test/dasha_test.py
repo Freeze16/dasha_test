@@ -3,9 +3,9 @@ from dasha import DashaMail
 import pytest
 import requests
 
-API = '463db793503a3a3cd42b7c48611d0e61'
-ID = 208436
-dasha = DashaMail(API, ID)
+from config import DASHA_API_KEY as API, DASHA_BASE_ID as ID
+
+dasha = DashaMail(API)
 
 
 def check(mail: str, r: str) -> bool:
@@ -26,7 +26,7 @@ def check(mail: str, r: str) -> bool:
     ]
 )
 def test(mails, deleted_mails):
-    dasha.update_mailing_list(mails)
+    dasha.update_mailing_list(ID, mails)
     url = dasha.BASE_URL + f'api_key={API}&method=lists.get_members&list_id={ID}'
     r = requests.post(url=url).text  # получаем всех мемберов из базы
 
